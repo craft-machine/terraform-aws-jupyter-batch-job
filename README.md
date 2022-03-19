@@ -58,7 +58,6 @@ data "aws_iam_policy_document" "my_policy" {
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
 ## Requirements
 
 No requirements.
@@ -66,38 +65,39 @@ No requirements.
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| aws  | n/a     |
+|------|---------|
+| aws | n/a |
 
 ## Inputs
 
-| Name                               | Description                                                                                                                                                                                                                                                                           | Type          | Default | Required |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------- | :------: |
-| capacity_provider                  | Name of the capacity provider                                                                                                                                                                                                                                                         | `string`      | `""`    |    no    |
-| cluster_id                         | ARN of an ECS cluster.                                                                                                                                                                                                                                                                | `string`      | n/a     |   yes    |
-| container_definitions              | The ECS task definition data source.                                                                                                                                                                                                                                                  | `string`      | n/a     |   yes    |
-| container_port                     | The port on the container to associate with the load balancer.                                                                                                                                                                                                                        | `number`      | n/a     |   yes    |
-| deployment_maximum_percent         | The upper limit (as a percentage of the service's desiredCount) of the number of running tasks that can be running in a service during a deployment.                                                                                                                                  | `number`      | `200`   |    no    |
-| deployment_minimum_healthy_percent | The lower limit (as a percentage of the service's desiredCount) of the number of running tasks that must remain running and healthy in a service during a deployment.                                                                                                                 | `number`      | `50`    |    no    |
-| desired_count                      | The number of instances of the task definition to place and keep running.                                                                                                                                                                                                             | `number`      | n/a     |   yes    |
-| ecs_service_role_arn               | ARN of default Amazon ECS service role.                                                                                                                                                                                                                                               | `string`      | n/a     |   yes    |
-| health_check                       | The destination for the health check request. Default /.                                                                                                                                                                                                                              | `string`      | `"/"`   |    no    |
-| health_check_healthy_threshold     | The number of consecutive health checks successes required before considering an unhealthy target healthy.                                                                                                                                                                            | `number`      | `3`     |    no    |
-| health_check_interval              | The approximate amount of time, in seconds, between health checks of an individual target                                                                                                                                                                                             | `number`      | `30`    |    no    |
-| health_check_timeout               | The amount of time, in seconds, during which no response means a failed health check.                                                                                                                                                                                                 | `number`      | `5`     |    no    |
-| health_check_unhealthy_threshold   | The number of consecutive health check failures required before considering the target unhealthy.                                                                                                                                                                                     | `number`      | `3`     |    no    |
-| name                               | Name to be used on all the resources as identifier                                                                                                                                                                                                                                    | `string`      | `""`    |    no    |
-| tags                               | A map of tags to add to all resources                                                                                                                                                                                                                                                 | `map(string)` | `{}`    |    no    |
-| volumes                            | A list of volumes that containers in service task will have access to. List item structure should mirror volume argument of aws_ecs_task_definition resource: https://registry.terraform.io/providers/hashicorp/aws/3.27.0/docs/resources/ecs_task_definition#volume-block-arguments. | `any`         | `[]`    |    no    |
-| vpc_id                             | VPC that will be used for all resources.                                                                                                                                                                                                                                              | `string`      | n/a     |   yes    |
-| wait_for_steady_state              | If true, Terraform will wait for the service to reach a steady state                                                                                                                                                                                                                  | `bool`        | `false` |    no    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| aws\_region | AWS Region | `string` | `"us-east-1"` | no |
+| container\_memory | Memory size in Megabytes allocated to container. | `number` | `1800` | no |
+| container\_mount\_points | List of mount points for provided volumes. | `any` | `[]` | no |
+| container\_vcpus | Number of VCPU allocated to container. | `number` | `1` | no |
+| container\_volumes | List of volumes you need to mount. | `any` | `[]` | no |
+| docker\_image | Docker image used for job. Image must contain installed papercraft. | `string` | `""` | no |
+| env | Environment code, like "qa", "staging", "production" | `any` | n/a | yes |
+| job\_queue\_arn | AWS Batch Job Queue ARN. | `any` | n/a | yes |
+| job\_retry\_attempts | Number of retries per job attempt. | `number` | `1` | no |
+| job\_timeout | Job timeout in seconds. This timeout is per attempt. | `number` | `3600` | no |
+| notebook\_execution\_name\_pattern | Pattern used to save execution outputs to S3. The most commonly used one is "{notebook.name}/{execution.timestamp}" | `any` | n/a | yes |
+| notebook\_group\_name | Name of top-level grouping for notebooks. Usually it is "etl". Other suggestions are "data\_science", "data\_monitoring", "reports" | `string` | `"etl"` | no |
+| notebook\_parameters | Parameters passed to the notebook via Papermill. Must be entered as terraform "map" type. Under the hood is converted into json before passing to Papermill. | `map(string)` | `{}` | no |
+| notebook\_relative\_path | Path to notebook inside repository folder that is copied to S3. | `any` | n/a | yes |
+| notebook\_repository\_name | Name of git repository. Is used as a part of path to notebook location on S3. | `any` | n/a | yes |
+| notebooks\_s3\_bucket\_name | S3 Bucket where jupyter notebooks and executions are stored. | `any` | n/a | yes |
+| schedule\_cron | (Optional) Cron expression, e.g. "0 2 \* \* ? \*". If blank the schedule is not created. | `string` | `""` | no |
+| schedule\_enabled | (Optional) To temporarily disable schedule, set this to "false". | `bool` | `true` | no |
+| schedule\_name | (Optional) Name of schedule. Will be used to generate Cloudwatch rule name and Batch Job name. Good values are "daily", "hourly", "periodic", etc. | `string` | `"schedule"` | no |
 
 ## Outputs
 
-| Name                         | Description |
-| ---------------------------- | ----------- |
-| ecs_task_execution_role_name | n/a         |
-| ecs_task_role_name           | n/a         |
-| lb_target_group_arn          | n/a         |
+| Name | Description |
+|------|-------------|
+| job\_definition\_name | n/a |
+| job\_role\_arn | n/a |
+| job\_role\_name | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
