@@ -144,7 +144,6 @@ CONTAINER_PROPERTIES
 
 data "aws_ssm_parameter" "commuter_host" {
   name = "_BI_Commuter_Host"
-  tags = var.tags
 }
 
 resource "aws_iam_role" "main" {
