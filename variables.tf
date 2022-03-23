@@ -15,8 +15,8 @@ variable "notebook_group_name" {
 
 variable "container_volumes" {
   description = "List of volumes you need to mount." # TODO: Fix type as soon as this issue will be resolved https://github.com/hashicorp/terraform/issues/19898
-  type = any
-  default = []
+  type        = any
+  default     = []
 }
 
 variable "container_mount_points" {
@@ -88,4 +88,10 @@ variable "aws_region" {
 variable "docker_image" {
   description = "Docker image used for job. Image must contain installed papercraft."
   default     = ""
+}
+
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
 }

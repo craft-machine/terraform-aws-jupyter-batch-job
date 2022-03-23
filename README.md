@@ -91,6 +91,7 @@ No requirements.
 | schedule\_cron | (Optional) Cron expression, e.g. "0 2 \* \* ? \*". If blank the schedule is not created. | `string` | `""` | no |
 | schedule\_enabled | (Optional) To temporarily disable schedule, set this to "false". | `bool` | `true` | no |
 | schedule\_name | (Optional) Name of schedule. Will be used to generate Cloudwatch rule name and Batch Job name. Good values are "daily", "hourly", "periodic", etc. | `string` | `"schedule"` | no |
+| tags | A map of tags to add to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
