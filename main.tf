@@ -139,12 +139,12 @@ resource "aws_batch_job_definition" "main" {
 }
 CONTAINER_PROPERTIES
 
-  tags = local.aws_tags
+  tags = var.tags
 }
 
 data "aws_ssm_parameter" "commuter_host" {
   name = "_BI_Commuter_Host"
-  tags = local.aws_tags
+  tags = var.tags
 }
 
 resource "aws_iam_role" "main" {
@@ -164,7 +164,7 @@ resource "aws_iam_role" "main" {
   ]
 }
 EOF
-  tags               = local.aws_tags
+  tags               = var.tags
 }
 
 resource "aws_iam_role_policy" "job_role_notebooks_s3_access" {
@@ -232,7 +232,7 @@ resource "aws_iam_role" "job_schedule_event_target" {
 }
 EOF
 
-  tags = local.aws_tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy" "job_schedule_event_target_role_aws_batch_submit_job_access" {
